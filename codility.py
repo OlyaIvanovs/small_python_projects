@@ -110,5 +110,44 @@ def permutation(A):
     return 0
 
 
+def prefix_sums(arr):
+    n = len(arr)
+    p = [0] * (n + 1)
+    for k in range(1, n + 1):
+        p[k] = p[k - 1] + arr[k - 1]
+    return p
+
+
+def count_total(p, x, y):
+    return p[y + 1] - p[x]
+
+
+def mushrooms(arr, k, m):
+    n = len(arr)
+    result = 0
+    pref = prefix_sums(arr)
+    for p in range(min(m, k) + 1):
+        left_pos = k - p
+        right_pos = min(n - 1, max(k, k + m - 2 * p))
+        result = max(result, count_total(pref, left_pos, right_pos))
+    for p in range(min(m + 1, n - k)):
+        right_pos = k + p
+        left_pos = max(0, min(k, k - (m - 2 * p)))
+        result = max(result, count_total(pref, left_pos, right_pos))
+    return result
+
+
+def passing_cars(A):
+    n = len(A)
+    if n > 1000000000:
+        return -1
+    pref = prefix_sums(A)
+    res = 0
+    for i, car in enumerate(A):
+        if car == 0:
+            res += count_total(pref, i, n - 1)
+    return res
+
+
 if __name__ == "__main__":
-    print(permutation([4, 1, 3, 2]))
+    print(passing_cars([0, 0]))
