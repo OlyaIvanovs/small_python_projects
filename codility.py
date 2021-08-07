@@ -139,15 +139,47 @@ def mushrooms(arr, k, m):
 
 def passing_cars(A):
     n = len(A)
-    if n > 1000000000:
-        return -1
     pref = prefix_sums(A)
     res = 0
     for i, car in enumerate(A):
         if car == 0:
             res += count_total(pref, i, n - 1)
+            if res > 1000000000:
+                return -1
     return res
 
 
+def distinct(A):
+    A.sort()
+    dist_values = 1
+    n = len(A)
+    if n == 0:
+        return 0
+    for i in range(1, n):
+        if A[i] != A[i - 1]:
+            dist_values += 1
+    return dist_values
+
+
+def max_product_of_three(A):
+    A.sort()
+    n = len(A)
+    product_of_three = A[n - 1] * A[n - 2] * A[n - 3]
+    product_of_three = max(A[0] * A[1] * A[2], product_of_three)
+    product_of_three = max(A[0] * A[1] * A[n - 1], product_of_three)
+    return product_of_three
+
+
+def triangle(A):
+    if len(A) < 3:
+        return 0
+
+    A.sort()
+    for i in range(len(A) - 2):
+        if A[i] + A[i + 1] > A[i + 2]:
+            return 1
+    return 0
+
+
 if __name__ == "__main__":
-    print(passing_cars([0, 0]))
+    print(max_product_of_three([-5, 5, -5, 4]))
